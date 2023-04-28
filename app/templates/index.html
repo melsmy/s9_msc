@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>gold5</title>
+		<script src="static/aframe.min.js"></script>
+		<!-- <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script> -->
+		<script src="static/jquery.min.js"></script>
+		<style>
+			body {
+				clear: both;
+				background-color: #dfe4eb;
+			}
+
+			.container {
+				position: absolute;
+				width: 100%;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				-ms-transform: translate(-50%, -50%);
+				z-index: 1000;
+				visibility: visible;
+			}
+
+			.btn {
+				--bg-color: #e5e5e5;
+				--font-color: #333;
+				position: absolute;
+				left: 50%;
+				top: 0;
+				transform: translate(-50%, -50%);
+				-ms-transform: translate(-50%, -50%);
+				border-radius: 5px;
+				padding: 16px 30px;
+				text-align: center;
+				cursor: pointer;
+				text-decoration: none;
+				color: black;
+				background-color: #e5e5e5;
+				font-size: 40px;
+				border: 0;
+				box-shadow: inset 2px 2px 2px 0px rgb(255 255 255 / 50%), 7px 7px 20px 0px rgb(0 0 0 / 10%), 4px 4px 5px 0px rgb(0 0 0 / 10%);
+				transition: all 600ms ease-out;
+				/* 以下为核心代码 */
+				background-size: 200% 100%;
+				background-position: right bottom;
+				background-image: linear-gradient(to right, var(--font-color) 50%, var(--bg-color) 50%);
+			}
+
+			.btn:hover {
+				color: white;
+				background-position: left bottom;
+			}
+
+			.tips {
+				display: none;
+				z-index: 1000;
+				position: absolute;
+				left: 50%;
+				top: 45%;
+				transform: translate(-50%, -50%);
+				-ms-transform: translate(-50%, -50%);
+				/* width: 150px; */
+				/* height: 150px; */
+				background-color: white;
+				font-size: 35px;
+				padding: 10px;
+				background-color: fff;
+				border-radius: 10px;
+				color: #333;
+			}
+		</style>
+	</head>
+	<body>
+		<a-scene id="mainscene" visible="false">
+			<a-assets>
+				<img id="bg" crossorigin="anonymous" src="static/g5.jpg">
+				<img id="start" crossorigin="anonymous" src="static/start.png">
+				<img id="star" crossorigin="anonymous" src="static/star.png">
+				<img id="arrow" crossorigin="anonymous" src="static/arrow.png">
+				<img id="correct" crossorigin="anonymous" src="static/correct.png">
+				<img id="wrong" crossorigin="anonymous" src="static/wrong.png">
+			</a-assets>
+			<!-- bg -->
+			<a-sky src="#bg" radius="15" position="0 2 0" rotation="0 0 0"></a-sky>
+			<!-- objs -->
+			<a-entity class="crab" position="-1.4 -1 -3.5" rotation="0 20 180" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image class="link" src="#star" width="1.4" height="0.8"></a-image>
+			</a-entity>
+			<a-entity class="crab_select" position="-1.4 -1.25 -3.5" rotation="0 20 180" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image src="#arrow" width="1.5" height="1.3"></a-image>
+			</a-entity>
+			<a-entity class="crab_check" position="-1.4 -1 -3.5" rotation="0 20 0" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image src="#correct" width=".5" height=".5"></a-image>
+			</a-entity>
+
+			<a-entity class="octopus" position="5 1.2 1.3" rotation="0 90 0" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image class="link" src="#star" width="2" height="1.2"></a-image>
+			</a-entity>
+			<a-entity class="octopus_select" position="5 0.8 1.3" rotation="0 80 180" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image src="#arrow" width="2" height="2"></a-image>
+			</a-entity>
+			<a-entity class="octopus_check" position="5 1.2 1.3" rotation="0 260 0" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image src="#correct" width=".6" height=".6"></a-image>
+			</a-entity>
+
+			<a-entity class="shark" position="0.5 -0.3 5" rotation="0 20 0" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image class="link" src="#star" width="1.8" height="1.1"></a-image>
+			</a-entity>
+			<a-entity class="shark_select" position="0.5 0 5" rotation="0 20 0" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image src="#arrow" width="1.8" height="1.8"></a-image>
+			</a-entity>
+			<a-entity class="shark_check" position="0.4 -0.3 4.3" rotation="0 170 0" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image src="#correct" width=".7" height=".7"></a-image>
+			</a-entity>
+
+			<a-entity class="turtle" position="1.5 2 -6.5" rotation="0 0 0" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image class="link" src="#star" width="2" height="1.2"></a-image>
+			</a-entity>
+			<a-entity class="turtle_select" position="1.5 1.6 -6.5" rotation="0 0 180" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image src="#arrow" width="2" height="2"></a-image>
+			</a-entity>
+			<a-entity class="turtle_check" position="1.5 2 -6.5" rotation="0 0 0" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image src="#correct" width=".6" height=".6"></a-image>
+			</a-entity>
+
+			<a-entity class="whale" position="-4.8 -1 -1.9" rotation="0 70 0" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image class="link" src="#star" width="2.8" height="1.6"></a-image>
+			</a-entity>
+			<a-entity class="whale_select" position="-5 -0.4 -2" rotation="-10 70 0" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image src="#arrow" width="3" height="3"></a-image>
+			</a-entity>
+			<a-entity class="whale_check" position="-4 -0.8 -1.6" rotation="-10 70 0" visible="false"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image src="#correct" width=".6" height=".6"></a-image>
+			</a-entity>
+
+			<!-- startBtn -->
+			<!-- position="-6 1.5 -5" rotation="0 0 0" -->
+			<a-entity class="start" start-btn position="-1 1 -5" rotation="0 0 0"
+				event-set__mouseenter="scale: 1.2 1.2 1" event-set__mouseleave="scale: 1 1 1" canvas-updater>
+				<a-image class="link" src="#start" width=".8" height=".8"></a-image>
+			</a-entity>
+			<!-- text -->
+			<a-text value="Press here" width="6" position="-1.7 1.7 -5" rotation="0 0 0">
+			</a-text>
+			<a-text id="res-count" value="Result(0/5)" width="6" position="-4.1 1.7 -5" rotation="0 0 0">
+			</a-text>
+			<a-box opacity="0.3" color="white" width="2.5" height="2.5" depth="0.001" position="-3 0.7 -5"
+				rotation="0 0 0">
+				<a-entity class="crab-text" visible="false">
+					<a-image class="checkImg" src="#wrong" width="0.5" height="0.5" position="-1.4 1.9 -5"></a-image>
+					<a-text color="white" align="left" baseline="center" position="-1.1 0.6 0" wrap-count="35"
+						value="crab">
+					</a-text>
+				</a-entity>
+				<a-entity class="octopus-text" visible="false">
+					<a-image class="checkImg" src="#wrong" width="0.5" height="0.5" position="-1.4 1.1 -5"></a-image>
+					<a-text color="white" align="left" baseline="center" position="-1.1 0.2 0" wrap-count="35"
+						value="octopus">
+					</a-text>
+				</a-entity>
+				<a-entity class="shark-text" visible="false">
+					<a-image class="checkImg" src="#wrong" width="0.5" height="0.5" position="-1.4 0.25 -5"></a-image>
+					<a-text color="white" align="left" baseline="center" position="-1.1 -0.2 0" wrap-count="35"
+						value="shark"></a-text>
+				</a-entity>
+				<a-entity class="turtle-text" visible="false">
+					<a-image class="checkImg" src="#wrong" width="0.5" height="0.5" position="-1.4 -0.55 -5">
+					</a-image>
+					<a-text color="white" align="left" baseline="center" position="-1.1 -0.6 0" wrap-count="35"
+						value="turtle">
+					</a-text>
+				</a-entity>
+				<a-entity class="whale-text" visible="false">
+					<a-image class="checkImg" src="#wrong" width="0.5" height="0.5" position="-1.4 -1.4 -5"></a-image>
+					<a-text color="white" align="left" baseline="center" position="-1.1 -1 0" wrap-count="35"
+						value="whale">
+					</a-text>
+				</a-entity>
+			</a-box>
+
+			<!-- Camera + cursor. -->
+			<a-entity>
+				<a-entity camera look-controls wasd-controls id="camera">
+					<a-entity position="0 0 -3"
+						animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 1 1 1; to: 1 1 1"
+						animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 5500; from: 1 1 1; to: 10 10 10"
+						animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1"
+						geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03;"
+						material="color: black; shader: flat" cursor="maxDistance: 30; fuse: true; fuseTimeout:5500"
+						raycaster="objects: .link">
+					</a-entity>
+				</a-entity>
+			</a-entity>
+			<!-- end scene -->
+		</a-scene>
+		<audio preload controls id="sound" visible="false">
+			<source src="static/gold_5.mp3" type="audio/mpeg">
+			<source src="static/gold_5.ogg" type="audio/ogg">
+		</audio>
+		<div class="container">
+			<button class="btn">Start</button>
+		</div>
+		<div class="tips">
+			Please click <img width="35" src="static/start.png"> first >>>
+		</div>
+		<script>
+			var words = ["crab", "octopus", "shark", "turtle", "whale"]
+			var end = 16.5
+			var aobj = {
+				'crab': [4.6, 5.5],
+				'octopus': [7, 8.1],
+				'shark': [10.1, 10.9],
+				'turtle': [12, 12.9],
+				'whale': [14.8, 15.6]
+			}
+			let index = 0
+			let answer = ''
+			var flag = 0
+			var a = document.getElementById('sound');
+			AFRAME.registerComponent('start-btn', {
+				schema: {
+					target: {
+						type: 'selector'
+					},
+
+				},
+				init: function() {
+					console.log('开始？')
+					var data = this.data;
+					var el = this.el;
+					var _timer;
+					el.addEventListener("mouseenter", function() {
+						if (_timer) {
+							clearTimeout(_timer);
+						}
+						_timer = setTimeout(function() {
+							// 选对才播放下一个 
+							if (flag) {
+								index++;
+							}
+							let word = words[index]
+							a.currentTime = aobj[word][0]
+							a.play();
+							answer = words[index]
+							flag = 0;
+
+							let dur = Math.ceil((aobj[word][1] - aobj[word][0]) * 1000)
+							setTimeout(function() {
+								a.pause()
+							}, dur)
+						}, 5500);
+					});
+					el.addEventListener("mouseleave", function() {
+						if (_timer) {
+							clearTimeout(_timer);
+							_timer = null;
+						}
+					});
+				}
+			});
+
+			function sceneInit() {
+				var answer_timer;
+				for (i in words) {
+					var el = document.getElementsByClassName(words[i])[0]
+					el.addEventListener('mouseenter', function(e) {
+						let _this = this
+						let className = _this.className
+						let _select = document.getElementsByClassName(className + '_select')[0]
+						let _check = document.getElementsByClassName(className + '_check')[0]
+						let u_answer = className
+						_select.setAttribute("visible", true);
+
+						if (answer_timer) {
+							clearTimeout(answer_timer);
+						}
+						answer_timer = setTimeout(function() {
+							if (answer != '') {
+								var text_el = document.getElementsByClassName(answer + '-text')[0]
+								// 显示答案
+								if (!document.getElementsByClassName(answer + '-text')[0].getAttribute(
+									'visible')) {
+									document.getElementsByClassName(answer + '-text')[0].setAttribute('visible',
+										"true")
+								}
+								if (u_answer === answer) {
+									//更改符号
+									text_el.children[0].setAttribute('src', "#correct")
+									_check.children[0].setAttribute('src', "#correct")
+									_check.setAttribute("visible", true)
+									sound.currentTime = 0
+									sound.play();
+									setTimeout(function() {
+										sound.pause()
+										// todo 改成特效？
+										if (index + 1 == words.length) {
+											alert('You have completed this course！');
+											document.getElementsByClassName('btn')[0].innerHTML =
+												"Learn again!",
+												document.getElementById('mainscene').setAttribute(
+													'visible', 'false')
+											document.getElementById('sound').style.display = "none"
+											clearScene()
+											$('.container').show()
+										}
+									}, 1500)
+									console.log('正确')
+									// 取消跟踪
+									_this.children[0].classList.remove("link")
+									flag = 1;
+									let count = parseInt(index + 1)
+									document.getElementById('res-count').setAttribute("value", "Result(" +
+										count + "/5)")
+									// 标记：答对之后，开始下一题之前，不要再播放错误音频
+									answer = ''
+								} else {
+									let word = words[index]
+									console.log('错误', word)
+									flag = 0;
+									sound.currentTime = 2
+									sound.play();
+									_check.children[0].setAttribute('src', "#wrong")
+									text_el.children[0].setAttribute('src', "#wrong")
+									_check.setAttribute("visible", true)
+
+									let dur = Math.ceil((aobj[word][1] - aobj[word][0]) * 1000)
+									setTimeout(function() {
+										sound.pause()
+										sound.currentTime = aobj[word][0]
+										sound.play();
+										setTimeout(function() {
+											sound.pause()
+										}, dur)
+									}, 1500)
+								}
+							} else {
+								if (answer == '') {
+									$('.tips').show(300)
+								}
+							}
+						}, 5500);
+
+
+					})
+
+					el.addEventListener('mouseleave', function(event) {
+						let _this = this;
+						_this.setAttribute("visible", false);
+						let obj_name = _this.className
+						document.getElementsByClassName(obj_name + '_select')[0].setAttribute('visible', "false")
+						// // 有镜头追踪时候才隐藏
+						if (_this.children[0].classList.contains('link')) {
+							document.getElementsByClassName(obj_name + '_check')[0].setAttribute('visible', "false")
+						}
+						// hide tips
+						$('.tips').hide(300)
+						if (answer_timer) {
+							clearTimeout(answer_timer);
+							answer_timer = null;
+						}
+					});
+				}
+			}
+			sceneInit()
+
+			document.getElementsByClassName('btn')[0].addEventListener('click', function() {
+				var _this = this
+				// this.parentNode.style.visibility="hidden";
+				$('.container').hide()
+				document.getElementById('mainscene').setAttribute('visible', "true")
+				document.getElementById('mainscene').style.display = 'block'
+				sound.play();
+				sound.pause();
+				sound.currentTime = end;
+				// alert(sound.currentTime)
+				sound.play();
+			})
+
+			$(document).ready(function() {
+				document.getElementById('res-count').setAttribute("value", "Result(0/" + words.length + ")")
+			});
+		
+			function clearScene() {
+				for (i in words) {
+					let el = $('.' + words[i]).children(':first')
+					index = 0
+					answer = ''
+					flag = 0
+					document.getElementById('res-count').setAttribute("value", "Result(0/" + words.length + ")")
+					// // hide tips
+					$('.tips').hide();
+					// //hide answer
+					document.getElementsByClassName(words[i] + '-text')[0].setAttribute('visible', "false")
+					$('.' + words[i] + '-text').find('.checkImg')[0].setAttribute('src', "#wrong")
+					// //追加跟踪
+					if (!el.hasClass('link')) {
+						el.addClass('link')
+					}
+					$('.' + words[i] + '_select')[0].setAttribute('visible', "false")
+					$('.' + words[i] + '_check')[0].setAttribute('visible', "false")
+				}
+			}
+		</script>
+	</body>
+</html>
